@@ -1,6 +1,7 @@
 # I18n::Joiner
 
 [![Build Status](https://travis-ci.org/spalenza/i18n-joiner.svg?branch=master)](https://travis-ci.org/spalenza/i18n-joiner)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3ad1d6e7f89235e209f3/maintainability)](https://codeclimate.com/github/spalenza/i18n-joiner/maintainability)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/i18n/joiner`. To experiment with that code, run `bin/console` for an interactive prompt.
 
