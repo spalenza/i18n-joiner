@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require "i18n/joiner"
+
+module I18n
+  module Joiner
+    class CLI < Thor
+      desc "hello", "my first cli yay"
+      def hello
+        puts "Hello world"
+      end
+    end
+  end
+end
+
+I18n::Joiner::CLI.start(ARGV)
