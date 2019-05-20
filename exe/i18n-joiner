@@ -3,15 +3,61 @@
 require "thor"
 require "i18n/joiner"
 
+begin
+  require "pry"
+rescue LoadError
+end
+
 module I18n
   module Joiner
     class CLI < Thor
-      desc "hello", "my first cli yay"
-      def hello
-        puts "Hello world"
+      RESERVED_WORDS = %w[
+      -v
+      --version
+      -h
+      --help
+      ].freeze
+
+      desc "organize", "generate i18n files"
+      method_option :output, aliases: "-o", desc: "output", required: false
+      argument :path, required: true, type: :string
+      argument :fallback_locale, required: true, type: :string
+      argument :locales, required: true, type: :array
+      def organize
+        path = '/Users/rodolfo.spalenza/companies/bioritmo/smart-system/config/locales'
+
+        output = options.fetch('output', path)
+        locales.each do |locale|
+          math_files = I18n::Joiner::PathResolver.
+            new(path, fallback_locale, locale).match_files
+
+          math_files.each do |files|
+            file_diff = I18n::Joiner::FileDiff.new(
+              files[:fallback],
+              files[:resolve],
+              output
+            )
+
+            file_diff.resolve_file!
+          end
+        end
       end
+
+      desc "version", "gem version"
+      map %w[--version -v] => :__print_version
+      def __print_version
+        puts I18n::Joiner::VERSION
+      end
+
+
+      default_task :organize
     end
   end
+end
+
+if !I18n::Joiner::CLI::RESERVED_WORDS.include?(ARGV[0]) &&
+    !I18n::Joiner::CLI.all_tasks.has_key?(ARGV[0])
+  ARGV.unshift(I18n::Joiner::CLI.default_task)
 end
 
 I18n::Joiner::CLI.start(ARGV)
